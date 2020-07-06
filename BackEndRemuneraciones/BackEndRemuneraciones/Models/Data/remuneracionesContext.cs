@@ -1,8 +1,14 @@
 ﻿using System;
+using BackEndRemuneraciones.Models.Empresa;
+using BackEndRemuneraciones.Models.Empleado.Ficha;
+using BackEndRemuneraciones.Models.Empleado.Condiciones;
+using BackEndRemuneraciones.Models.Empleado.Prevision;
+using BackEndRemuneraciones.Models.Usuario;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace BackEndRemuneraciones.Models
+namespace BackEndRemuneraciones.Models.Data
 {
     public partial class remuneracionesContext : DbContext
     {
@@ -24,6 +30,19 @@ namespace BackEndRemuneraciones.Models
         public virtual DbSet<Aspnetusertokens> Aspnetusertokens { get; set; }
         public virtual DbSet<Efmigrationshistory> Efmigrationshistory { get; set; }
         public virtual DbSet<Tbempleados> Tbempleados { get; set; }
+        public virtual DbSet<AfpModel> AfpModel { get; set; }
+        public virtual DbSet<RentasTopasImpModel> RentasTopasImpModel { get; set; }
+        public virtual DbSet<ApvModel> ApvModel { get; set; }
+        public virtual DbSet<AsigFamiliarTramo> AsigFamiliarTramo { get; set; }
+        public virtual DbSet<RentasMinImponibles> RentasMinImponibles { get; set; }
+        public virtual DbSet<FichaEmpresa> FichaEmpresa { get; set; }
+        public virtual DbSet<BancoNomina> BancoNomina { get; set; }
+        public virtual DbSet<CajaCompensacion> CajaCompensacion { get; set; }
+        public virtual DbSet<ContratoEmpleado> ContratoEmpleado { get; set; }
+        public virtual DbSet<BeneficiosEmpleado> BeneficiosEmpleado { get; set; }
+        public virtual DbSet<SueldoEmpleado> SueldoEmpleado { get; set; }
+        public virtual DbSet<PrevisionEmpleado> PrevisionEmpleado { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -337,7 +356,7 @@ namespace BackEndRemuneraciones.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
 
-                entity.Property(e => e.Nacionalidad).HasColumnType("int(11)");
+                entity.Property(e => e.Nacionalidad).HasColumnType("varchar(25)");
 
                 entity.Property(e => e.Nombre)
                     .IsRequired()

@@ -22,15 +22,13 @@ const Sidebar = () => {
           <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             {/* Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library */}
-            <li className="nav-item menu-open">
-              <a href="#" className="nav-link">
-                <i className="nav-icon fas fa-tachometer-alt" />
-                <p>
-                  Inicio
-                    <i className="right fas fa-angle-left" />
-                </p>
-              </a>
+            <li className="nav-item">
+              <NavLink to="/" className="nav-link">
+                  <i className="nav-icon fa fa-home"></i>
+                  <p>Inicio</p>
+              </NavLink>
             </li>
+     
             <li className="nav-item">
               <NavLink to="/Empresa" className="nav-link">
                 <i className="nav-icon fas fa-building" ></i>

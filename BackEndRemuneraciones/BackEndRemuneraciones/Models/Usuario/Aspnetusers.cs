@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BackEndRemuneraciones.Models
+namespace BackEndRemuneraciones.Models.Usuario
 {
     public partial class Aspnetusers
     {
