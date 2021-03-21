@@ -8,6 +8,8 @@ namespace BackEndRemuneraciones.Models
     public class ApvModel
     {
         public int Id { get; set; }
+        public DateTime FechaPrevision { get; set; }
+        public bool EstaActiva { get; set; } 
         public string Tope { get; set; }
         public decimal MontoTope { get; set; }
     }

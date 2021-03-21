@@ -10,5 +10,14 @@ namespace BackEndRemuneraciones.Models
         public int Id { get; set; }
         public string NombreCaso { get; set; }
         public decimal Monto { get; set; }
+        TipoTope TipoTopeMinImp { get; set; }
+    }
+
+    public enum TipoTipeMinImp
+    {
+        TRABAJADOR_DEP_E_INDEP = 1,
+        MENOR_Y_MAYOR = 2,
+        TRABAJADOR_CASA_PARTICULAR = 3,
+        FINES_NO_REMUNERACION = 4
     }
 }

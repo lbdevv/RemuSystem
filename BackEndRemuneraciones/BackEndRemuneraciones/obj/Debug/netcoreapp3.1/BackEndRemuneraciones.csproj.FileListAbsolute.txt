@@ -234,4 +234,11 @@ C:\GeoRemu\BackEndRemuneraciones\BackEndRemuneraciones\bin\Debug\netcoreapp3.1\r
 C:\GeoRemu\BackEndRemuneraciones\BackEndRemuneraciones\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
 C:\GeoRemu\BackEndRemuneraciones\BackEndRemuneraciones\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
 C:\GeoRemu\BackEndRemuneraciones\BackEndRemuneraciones\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Security.Cryptography.Pkcs.dll
+C:\GeoRemu\BackEndRemuneraciones\BackEndRemuneraciones\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\GeoRemu\BackEndRemuneraciones\BackEndRemuneraciones\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\GeoRemu\BackEndRemuneraciones\BackEndRemuneraciones\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+C:\GeoRemu\BackEndRemuneraciones\BackEndRemuneraciones\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+C:\GeoRemu\BackEndRemuneraciones\BackEndRemuneraciones\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\GeoRemu\BackEndRemuneraciones\BackEndRemuneraciones\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+C:\GeoRemu\BackEndRemuneraciones\BackEndRemuneraciones\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
 C:\GeoRemu\BackEndRemuneraciones\BackEndRemuneraciones\obj\Debug\netcoreapp3.1\BackEndRemuneraciones.MvcApplicationPartsAssemblyInfo.cache

@@ -4,6 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using BackEndRemuneraciones.Models.Empresa.RequestEmpresa;
 using BackEndRemuneraciones.Models.Data;
+using BackEndRemuneraciones.Models.Empleado.Ficha;
+using Microsoft.EntityFrameworkCore;
+using BackEndRemuneraciones.Models.Request;
+using BackEndRemuneraciones.Models.Autenticacion;
 
 
 namespace BackEndRemuneraciones.Models.Empresa
@@ -27,6 +31,9 @@ namespace BackEndRemuneraciones.Models.Empresa
         public bool Vigente { get; set; }
         public int FormaPagoGratif { get; set; }
         public int FormPagoMoviColacion { get; set; }
+        public int UsuarioEmpresaId { get; set; }
+        public virtual Usuario UsuarioEmpresa {get;set;}
+        public virtual List<Tbempleados> lstEmpleados { get; set; }
 
 
 
@@ -56,20 +63,21 @@ namespace BackEndRemuneraciones.Models.Empresa
 
                 db.FichaEmpresa.Add(ObjAInsertar);
                 Result = db.SaveChanges();
-                
             }
 
             return Result;
         }
-
-        public static List<FichaEmpresa> ObtenerListadoEmpresas()
+        public static List<ListadoEmpresasRequestModel> ObtenerListadoEmpresas()
         {
-            List<FichaEmpresa> lstEmpresas = new List<FichaEmpresa>();
+            List<ListadoEmpresasRequestModel> lstEmpresas = new List<ListadoEmpresasRequestModel>();
             using (remuneracionesContext db = new remuneracionesContext())
             {
-                lstEmpresas = db.FichaEmpresa.ToList();
+                lstEmpresas = db.FichaEmpresa.Select(x => 
+                                                    new ListadoEmpresasRequestModel{
+                                                        Id = x.Id,
+                                                        Nombre = x.RazonSocial
+                                                    }).ToList();
             }
-
             return lstEmpresas;
         }
 
@@ -78,11 +86,13 @@ namespace BackEndRemuneraciones.Models.Empresa
             FichaEmpresa EmpresaEcontrada = new FichaEmpresa();
             using (remuneracionesContext db = new remuneracionesContext())
             {
-                EmpresaEcontrada = db.FichaEmpresa.SingleOrDefault(Empresa => Empresa.Id == IdEmpresa);
+                EmpresaEcontrada = db.FichaEmpresa.Include(Emps => Emps.lstEmpleados)
+                                                  .SingleOrDefault(Empresa => Empresa.Id == IdEmpresa);
             }
 
             return EmpresaEcontrada;
         }
+        
 
 
     }

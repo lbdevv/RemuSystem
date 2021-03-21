@@ -9,7 +9,15 @@ namespace BackEndRemuneraciones.Models
     {
         public int Id { get; set; }
         public string NombreTipoRenta { get; set; }
-        public string UFCLP { get; set; }
+        public decimal UFCLP { get; set; }
+        public TipoTope Tope_id { get; set; }
+        public bool EstaActiva { get; set; }
 
+    }
+
+    public enum TipoTope{
+        AFP = 1,
+        IPS = 2,
+        SEGURO_CESANTIA = 3
     }
 }

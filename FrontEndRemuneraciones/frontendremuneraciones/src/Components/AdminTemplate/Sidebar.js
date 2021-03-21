@@ -23,9 +23,16 @@ const Sidebar = () => {
             {/* Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library */}
             <li className="nav-item">
-              <NavLink to="/" className="nav-link">
+              <NavLink to="/home" className="nav-link">
                   <i className="nav-icon fa fa-home"></i>
                   <p>Inicio</p>
+              </NavLink>
+            </li>
+
+            <li className="nav-item">
+              <NavLink to="/Configuracion" className="nav-link">
+              <i className="nav-icon fas fa-cog" ></i>
+              <p>Configuración</p>
               </NavLink>
             </li>
      
@@ -39,6 +46,12 @@ const Sidebar = () => {
               <NavLink className="nav-link" to="/LstEmpleado">
                 <i className="nav-icon fas fa-users"></i>
                 <p>Empleados</p>
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/Reportes" >
+                    <i className="nav-icon fas fa-file"></i>
+                    <p>Reportes</p>
               </NavLink>
             </li>
 

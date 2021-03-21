@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using BackEndRemuneraciones.Models.Request;
 using BackEndRemuneraciones.Models.Empleado.Ficha;
 using BackEndRemuneraciones.Helpers;
+using BackEndRemuneraciones.Services.Request;
+using BackEndRemuneraciones.Services;
 
 namespace BackEndRemuneraciones.Controllers.Empleados
 {
@@ -24,30 +26,25 @@ namespace BackEndRemuneraciones.Controllers.Empleados
         }
 
         [HttpPost("AgregarEmpleado")]
-        public IActionResult InsertarEmpleado(TbEmpeladoRequestModel NuevoEmp)
+        public IActionResult InsertarEmpleado(FichaEmpleadoRequestModel NewEmp)
         {
-            var Insertar = Tbempleados.InsertarEmpleado(NuevoEmp);
-            return Ok(Insertar);
-        }
-
-        [HttpPut("ActualizarFichaEmp")]
-        public IActionResult ActualizarEmpleado(int IdEmp)  
-        {
-            var Result = false;
-            var EmpAactualizar = Tbempleados.ObtenerEmpleado(IdEmp);
-
-            if(EmpAactualizar != null) { 
-                Result = Tbempleados.ActualizarEmpleado(EmpAactualizar);
-            }
-
-            return Ok(Result);
+            var ResultEmpleadoAgregado = Tbempleados.InsertarEmpleado(NewEmp); 
+            
+            return Ok(ResultEmpleadoAgregado);
         }
         
         [HttpGet("GetEmpleado/{id}")]
         public IActionResult ObtenerEmpleado(int id)
         {
-            var Empleado = Tbempleados.ObtenerEmpleado(id);
+            var Empleado = Tbempleados.ObtenerLiquidacionEmpleado(id);
             return Ok(Empleado);
+        }
+
+        [HttpPost("CargarLiquidacion/{id}")]
+        public IActionResult GenerarLiquidacion(int id)
+        {
+            bool Result = Tbempleados.AgregarLiquidacion(id);
+            return Ok(Result);
         }
 
         [HttpPut("DesactivarEmpleado/{id}")]
@@ -66,6 +63,11 @@ namespace BackEndRemuneraciones.Controllers.Empleados
                   Result = Tbempleados.AgregarEmpDesdeExcel(ExcelEmp);
             }
             return Ok(Result);
+        }
+        [HttpGet("EmpleadoLstHyD")]
+        public IActionResult ListaHyDEmpleado(){
+            var LstHyD = ServiciosHyD.ObtenerHyDEmpleado(1);
+            return Ok(LstHyD);
         }
 
     }
