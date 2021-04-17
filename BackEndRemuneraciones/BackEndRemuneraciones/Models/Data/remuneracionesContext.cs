@@ -26,7 +26,6 @@ namespace BackEndRemuneraciones.Models.Data
             : base(options)
         {
         }
-
         public virtual DbSet<Usuario> Usuario { get; set; }
         public virtual DbSet<Tbempleados> Tbempleados { get; set; }
         public virtual DbSet<AfpModel> AfpModel { get; set; }
@@ -63,14 +62,13 @@ namespace BackEndRemuneraciones.Models.Data
         public virtual DbSet<LibroRemuneraciones> LibroRemuneraciones { get; set; }
         public virtual DbSet<TipoEmpresa> TipoEmpresa { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-
-                optionsBuilder.UseMySql("server=localhost;port=3306;database=remuneraciones;uid=root;pwd=root", x => x.ServerVersion("10.1.31-mariadb"));
-            }
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //         optionsBuilder.UseMySql("server=localhost;port=3306;database=remuneraciones;uid=root;pwd=", x => x.ServerVersion("10.1.31-mariadb"));
+        //    }
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

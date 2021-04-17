@@ -18,10 +18,17 @@ namespace BackEndRemuneraciones.Controllers.Empleados
     [EnableCors]
     public class EmpleadoController : ControllerBase
     {
+        private Models.Data.remuneracionesContext _db;
+
+        public EmpleadoController(Models.Data.remuneracionesContext db) => _db = db;
+
+
         [HttpGet("LstEmpleados")]
+
+
         public IActionResult GetLstEmpleados()
         {
-               var lstEmpleados = Tbempleados.ListarEmpleados();
+               var lstEmpleados = Tbempleados.ListarEmpleados(_db);
                return Ok(lstEmpleados);
         }
 
@@ -29,6 +36,8 @@ namespace BackEndRemuneraciones.Controllers.Empleados
         public IActionResult InsertarEmpleado(FichaEmpleadoRequestModel NewEmp)
         {
             var ResultEmpleadoAgregado = Tbempleados.InsertarEmpleado(NewEmp); 
+
+        
             
             return Ok(ResultEmpleadoAgregado);
         }

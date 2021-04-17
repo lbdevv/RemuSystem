@@ -50,11 +50,10 @@ namespace BackEndRemuneraciones.Models.Empleado.Ficha
 
         //Nota cuando se crea al empleado y se le asigna una empresa y un contrato también se le asigna una coleccion de haberes y descuentos por defecto con coherencia a su contrato
 
-        public static List<ListaEmpleadoRequestModel> ListarEmpleados()
+        public static List<ListaEmpleadoRequestModel> ListarEmpleados(remuneracionesContext db)
         {
             List<ListaEmpleadoRequestModel> lstEmpleados = new List<ListaEmpleadoRequestModel>();
-            using (remuneracionesContext db = new remuneracionesContext())
-            {
+
                 lstEmpleados = db.Tbempleados.Select(x => new ListaEmpleadoRequestModel()
                 {
                     Id = x.Id,
@@ -63,7 +62,7 @@ namespace BackEndRemuneraciones.Models.Empleado.Ficha
                     Apellido  = x.Apellido,
                     FechaNacimiento = x.FechaNacimiento.ToString("dd-MM-yyyy")
                 }).ToList();
-            }
+            
 
             return lstEmpleados;
         }
@@ -177,6 +176,7 @@ namespace BackEndRemuneraciones.Models.Empleado.Ficha
                                 HaberOdescuentoId = ItemHaber.Id,
                                 TipoHoD = TipoHaberODescuento.HABER,
                                 Monto = ItemHaber.ValorCalculo
+
                             };
                             LstHaberesYdescARegistrar.Add(HaberAResgistrar);
                         }
