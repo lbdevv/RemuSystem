@@ -14,13 +14,11 @@ namespace BackEndRemuneraciones.Models
         public virtual RegionModel Region { get; set; }
 
 
-        public static List<ComunaModel> ObtenerComunas()
+        public static List<ComunaModel> ObtenerComunas(remuneracionesContext db)
         {
             List<ComunaModel> Comunas = new List<ComunaModel>();
-            using (var db = new remuneracionesContext())
-            {
-                Comunas = db.ComunaModels.ToList();
-            }
+            Comunas = db.ComunaModels.ToList();
+            
             return Comunas;
         }
 

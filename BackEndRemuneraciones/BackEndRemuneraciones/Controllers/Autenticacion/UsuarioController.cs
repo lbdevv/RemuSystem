@@ -18,9 +18,12 @@ namespace BackEndRemuneraciones.Controllers.Autenticacion
     {
         private IUsuarioServicio _usuarioServicio;
 
-        public UsuarioController(IUsuarioServicio usuarioServicio)
+        private Models.Data.remuneracionesContext _db;
+
+        public UsuarioController(IUsuarioServicio usuarioServicio, Models.Data.remuneracionesContext db)
         {
             _usuarioServicio = usuarioServicio;
+            _db = db;
         }
         
         [HttpPost("Login")]

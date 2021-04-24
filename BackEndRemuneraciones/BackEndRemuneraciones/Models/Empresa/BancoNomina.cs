@@ -11,14 +11,13 @@ namespace BackEndRemuneraciones.Models.Empresa
         public int Id { get; set; }
         public string Nombre { get; set; }
 
-        public static List<BancoNomina> ObtenerTodosLosBancos()
+        public static List<BancoNomina> ObtenerTodosLosBancos(remuneracionesContext db)
         {
             List<BancoNomina> lstBanco = new List<BancoNomina>();
 
-            using (remuneracionesContext db = new remuneracionesContext())
-            {
-                lstBanco = db.BancoNomina.ToList();
-            }
+
+            lstBanco = db.BancoNomina.ToList();
+            
 
             return lstBanco;
         }
@@ -30,13 +29,12 @@ namespace BackEndRemuneraciones.Models.Empresa
         public string Nombre { get; set; }
 
 
-        public static List<CajaCompensacion> ObtenerLstCajaCompensacion()
+        public static List<CajaCompensacion> ObtenerLstCajaCompensacion(remuneracionesContext db)
         {
             List<CajaCompensacion> lstCajas = new List<CajaCompensacion>();
-            using(remuneracionesContext db = new remuneracionesContext())
-            {
-                lstCajas = db.CajaCompensacion.ToList();
-            }
+
+            lstCajas = db.CajaCompensacion.ToList();
+            
             return lstCajas; 
         }
     }

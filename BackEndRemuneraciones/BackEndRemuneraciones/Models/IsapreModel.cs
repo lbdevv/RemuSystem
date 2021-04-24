@@ -11,12 +11,10 @@ namespace BackEndRemuneraciones.Models
         public int Id { get;set; }
         public string Nombre { get;set; }
 
-        public static List<IsapreModel> ObtenerIsapres(){
+        public static List<IsapreModel> ObtenerIsapres(remuneracionesContext db){
             List<IsapreModel> LstIsapres = new List<IsapreModel>();
-            using (remuneracionesContext db = new remuneracionesContext()){
-
-                LstIsapres = db.IsapreModel.ToList();
-            }
+            LstIsapres = db.IsapreModel.ToList();
+            
             return LstIsapres;
         }
     }

@@ -10,26 +10,25 @@ namespace BackEndRemuneraciones.Models
         public int Id {get;set;}
         public string Nombre {get;set;}
 
-        public static List<TipoContratoModel> ObtenerListaContratos(){
+        public static List<TipoContratoModel> ObtenerListaContratos(remuneracionesContext db){
             List<TipoContratoModel> LstContratos = new List<TipoContratoModel>();
-             using (remuneracionesContext db = new remuneracionesContext()){
-                 LstContratos = db.TipoContratoModel.ToList();
-             }
+            
+            LstContratos = db.TipoContratoModel.ToList();
+             
              return LstContratos;
         }
 
-        public static bool VerificarEsIndefinido(int id){
+        public static bool VerificarEsIndefinido(int id, remuneracionesContext db){
             bool Result = false;
             TipoContratoModel ContratoConsultado = new TipoContratoModel();
 
-            using(remuneracionesContext db = new remuneracionesContext()){    
-                ContratoConsultado = db.TipoContratoModel.SingleOrDefault(x => x.Id == id);
-                if(ContratoConsultado != null && ContratoConsultado.Nombre == "Contrato Plazo Fijo"){
-                    Result = true;
-                }else{
-                    Result = false;
-                }
-            }
+            ContratoConsultado = db.TipoContratoModel.SingleOrDefault(x => x.Id == id);
+            if(ContratoConsultado != null && ContratoConsultado.Nombre == "Contrato Plazo Fijo")
+                Result = true;
+            else
+                Result = false;
+            
+            
             return Result;
         }
     }

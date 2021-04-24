@@ -68,12 +68,11 @@ namespace BackEndRemuneraciones.Models.Empleado.Ficha
         }
 
 
-        public static bool InsertarEmpleado(FichaEmpleadoRequestModel NuevoEmp)
+        public static bool InsertarEmpleado(FichaEmpleadoRequestModel NuevoEmp, remuneracionesContext db)
         {
             bool Result = false;
 
-            using (remuneracionesContext db = new remuneracionesContext())
-            {
+    
                 using (var dbContextTransaction = db.Database.BeginTransaction())
                 {
                     try
@@ -98,6 +97,7 @@ namespace BackEndRemuneraciones.Models.Empleado.Ficha
                         ObjEmpresa.Vigente = true;
                         ObjEmpresa.FormaPagoGratif = 1;
                         ObjEmpresa.FormPagoMoviColacion = 1;
+                        ObjEmpresa.UsuarioEmpresaId = 1;
 
                         InsertEmpleado.EstaDisponible = Convert.ToBoolean(NuevoEmp.EstaVigente);
                         InsertEmpleado.Nombre = NuevoEmp.Nombre;
@@ -115,8 +115,12 @@ namespace BackEndRemuneraciones.Models.Empleado.Ficha
                         //Contrato
                         InsertEmpleadoContrato.ContratoDesde = Helpers.Utiles.ToDD_MM_AAAA_Multi(NuevoEmp.ContratoDesde);
                         InsertEmpleadoContrato.ContratoHasta = Helpers.Utiles.ToDD_MM_AAAA_Multi(NuevoEmp.ContratoHasta);
-                        CargosModel Cargo = db.CargosModel.SingleOrDefault(x => x.Id == Convert.ToInt32(NuevoEmp.Cargo));
-                        InsertEmpleadoContrato.Cargo = Cargo;
+                        CargosModel Cargo = new CargosModel();
+                        if(NuevoEmp.Cargo != "Selecciona")
+                        {
+                             Cargo = db.CargosModel.Where(x => x.Id == Convert.ToInt32(NuevoEmp.Cargo)).FirstOrDefault();
+                        }
+                         InsertEmpleadoContrato.Cargo = Cargo;
 
                         //Sueldo
                         InsertEmpleadoSueldo.AsignColacion = Convert.ToDecimal(NuevoEmp.AsignColacion);
@@ -127,6 +131,8 @@ namespace BackEndRemuneraciones.Models.Empleado.Ficha
                         AfpModel AfpEmpleado = db.AfpModel.SingleOrDefault(x => x.Id == Convert.ToInt32(NuevoEmp.AFPId));
 
                         //Prevision
+                        //ver la posilidad de nulos en las relaciones
+                        var isapreObject = new IsapreModel();
                         InsertEmpleadoPrevi.AFPId = AfpEmpleado.Id;
                         if (!string.IsNullOrWhiteSpace(NuevoEmp.IsapreId) && !string.IsNullOrWhiteSpace(NuevoEmp.IsapreTipoMonto))
                         {
@@ -136,6 +142,7 @@ namespace BackEndRemuneraciones.Models.Empleado.Ficha
                             InsertEmpleadoPrevi.IsapreId = Convert.ToInt32(NuevoEmp.IsapreId);
                             InsertEmpleadoPrevi.MontoPactadoIsapre = Convert.ToDecimal(NuevoEmp.IsapreMonto);
                         }
+                         InsertEmpleadoPrevi.Isapre = isapreObject;
 
                         InsertEmpleado.ContratoEmp = InsertEmpleadoContrato;
                         InsertEmpleado.SueldoEmp = InsertEmpleadoSueldo;
@@ -200,25 +207,24 @@ namespace BackEndRemuneraciones.Models.Empleado.Ficha
                         dbContextTransaction.Commit();
                         Result = true;
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         dbContextTransaction.Rollback();
                     }
 
                 }
-            }
+            
 
 
             return Result;
         }
 
-        public static LiquidacionEmpleado ObtenerLiquidacionEmpleado(int IdEmp)
+        public static LiquidacionEmpleado ObtenerLiquidacionEmpleado(int IdEmp, remuneracionesContext db)
         {
             if (IdEmp <= 0) return null;
 
             var Liquidacion = new LiquidacionEmpleado();
-            using (var db = new remuneracionesContext())
-            {
+      
                 try
                 {
                     //Falta listar los topes y tramos.
@@ -332,7 +338,7 @@ namespace BackEndRemuneraciones.Models.Empleado.Ficha
 
                     if (ObjEmpleado != null)
                     {
-                        var HyDemp = ServiciosHyD.ObtenerHyDEmpleado(IdEmp);
+                        var HyDemp = ServiciosHyD.ObtenerHyDEmpleado(IdEmp, db);
 
                         if (HyDemp.Item1.Count() <= 0 || HyDemp.Item2.Count() <= 0) return null;
 
@@ -355,7 +361,6 @@ namespace BackEndRemuneraciones.Models.Empleado.Ficha
                             NombreDescuento = x.Nombre,
                             MontoDescuento = x.ValorCalculo
                         }).ToList();
-
 
                         decimal CalculoDescuentoAFP = CalculosLiquidacion.CalculoAFPIndefinido(AFP.DependientesTasaAfp, ObjEmpleado.SueldoEmp.SueldoBase, AFPTope);
                         string DescuentoAFPNombre = CalculosLiquidacion.VistaPorcentajeLiquidacion(AFP.DependientesTasaAfp, CalculoDescuentoAFP, AFP.NombreAfp);
@@ -477,112 +482,109 @@ namespace BackEndRemuneraciones.Models.Empleado.Ficha
                 {
                     return null;
                 }
-            }
+            
 
             return Liquidacion;
         }
 
-        public static bool AgregarLiquidacion(int IdEmp)
+        public static bool AgregarLiquidacion(int IdEmp, remuneracionesContext db)
         {
             bool Result = false;
 
-            LiquidacionEmpleado LiquidacionEmpleado = ObtenerLiquidacionEmpleado(IdEmp);
-            Result = ServiciosLiquidacion.InsertarLiquidacion(LiquidacionEmpleado);
+            LiquidacionEmpleado LiquidacionEmpleado = ObtenerLiquidacionEmpleado(IdEmp, db);
+            Result = ServiciosLiquidacion.InsertarLiquidacion(LiquidacionEmpleado, db);
 
             return Result;
         }
 
-        public static LiquidacionEmpleado ObtenerEmpleado(int IdEmp)
-        {
-            using (remuneracionesContext db = new remuneracionesContext())
+        public static LiquidacionEmpleado ObtenerEmpleado(int IdEmp, remuneracionesContext db)
+    {
+            var UTM = db.UTMModel.FirstOrDefault(); //Esta logica puede cambiar en el futuro cuando se inserten las nuevas fechas
+            var SueldoMinimo = db.IMMModel.FirstOrDefault();
+            var UF = db.UFModel.FirstOrDefault();
+
+            IndicadoresEconomicos Indicadores = new IndicadoresEconomicos();
+            Indicadores.UF = UF;
+            Indicadores.UTM = UTM;
+            Indicadores.SueldoMinimo = SueldoMinimo;
+
+            var ObjEmpleado = db.Tbempleados.Include(c => c.ContratoEmp)
+                                            .Include(s => s.SueldoEmp)
+                                            .Include(p => p.PrevisionEmp)
+                                            .ThenInclude(a => a.AFP)
+                                            .SingleOrDefault(Emp => Emp.Id == IdEmp);
+
+            LiquidacionEmpleado DatosLiquidacion = new LiquidacionEmpleado();
+            HaberImponible HaberImp = new HaberImponible();
+            HaberImponible HaberImp2 = new HaberImponible();
+            HaberNoImponible HaberNoImp = new HaberNoImponible();
+            HaberNoImponible HaberNoImp2 = new HaberNoImponible();
+            DescuentosLiquidacion Descuentos = new DescuentosLiquidacion();
+
+            var DatosEmpleado = new InfoEmpleadoEmpresa();
+            var lstHaberImponible = new List<HaberImponible>();
+            var lstHaberNoImponible = new List<HaberNoImponible>();
+            var lstDescuentos = new List<DescuentosLiquidacion>();
+
+            SueldoEmpleado InfoSueldoEmp = ObjEmpleado.SueldoEmp;
+            AfpModel InfoAFP = ObjEmpleado.PrevisionEmp.AFP;
+            ContratoEmpleado Contrato = ObjEmpleado.ContratoEmp;
+
+            if (InfoSueldoEmp.SueldoBase > 0)
             {
-
-                var UTM = db.UTMModel.FirstOrDefault(); //Esta logica puede cambiar en el futuro cuando se inserten las nuevas fechas
-                var SueldoMinimo = db.IMMModel.FirstOrDefault();
-                var UF = db.UFModel.FirstOrDefault();
-
-                IndicadoresEconomicos Indicadores = new IndicadoresEconomicos();
-                Indicadores.UF = UF;
-                Indicadores.UTM = UTM;
-                Indicadores.SueldoMinimo = SueldoMinimo;
-
-                var ObjEmpleado = db.Tbempleados.Include(c => c.ContratoEmp)
-                                                .Include(s => s.SueldoEmp)
-                                                .Include(p => p.PrevisionEmp)
-                                                .ThenInclude(a => a.AFP)
-                                                .SingleOrDefault(Emp => Emp.Id == IdEmp);
-
-                LiquidacionEmpleado DatosLiquidacion = new LiquidacionEmpleado();
-                HaberImponible HaberImp = new HaberImponible();
-                HaberImponible HaberImp2 = new HaberImponible();
-                HaberNoImponible HaberNoImp = new HaberNoImponible();
-                HaberNoImponible HaberNoImp2 = new HaberNoImponible();
-                DescuentosLiquidacion Descuentos = new DescuentosLiquidacion();
-
-                var DatosEmpleado = new InfoEmpleadoEmpresa();
-                var lstHaberImponible = new List<HaberImponible>();
-                var lstHaberNoImponible = new List<HaberNoImponible>();
-                var lstDescuentos = new List<DescuentosLiquidacion>();
-
-                SueldoEmpleado InfoSueldoEmp = ObjEmpleado.SueldoEmp;
-                AfpModel InfoAFP = ObjEmpleado.PrevisionEmp.AFP;
-                ContratoEmpleado Contrato = ObjEmpleado.ContratoEmp;
-
-                if (InfoSueldoEmp.SueldoBase > 0)
-                {
-                    HaberImp.NombreHaber = "Sueldo Base";
-                    HaberImp.MontoHaber = InfoSueldoEmp.SueldoBase;
-                }
-                if (InfoSueldoEmp.AsignMovilizacion > 0)
-                {
-                    HaberNoImp.NombreHaber = "Movilización";
-                    HaberNoImp.MontoHaber = InfoSueldoEmp.AsignMovilizacion;
-                }
-                if (InfoSueldoEmp.AsignColacion > 0)
-                {
-                    HaberNoImp2.NombreHaber = "Colación";
-                    HaberNoImp2.MontoHaber = InfoSueldoEmp.AsignColacion;
-                }
-                if (InfoAFP != null)
-                {
-                    decimal CalculoDescuento = InfoSueldoEmp.SueldoBase * InfoAFP.DependientesTasaAfp;
+                HaberImp.NombreHaber = "Sueldo Base";
+                HaberImp.MontoHaber = InfoSueldoEmp.SueldoBase;
+            }
+            if (InfoSueldoEmp.AsignMovilizacion > 0)
+            {
+                HaberNoImp.NombreHaber = "Movilización";
+                HaberNoImp.MontoHaber = InfoSueldoEmp.AsignMovilizacion;
+            }
+            if (InfoSueldoEmp.AsignColacion > 0)
+            {
+                HaberNoImp2.NombreHaber = "Colación";
+                HaberNoImp2.MontoHaber = InfoSueldoEmp.AsignColacion;
+            }
+            if (InfoAFP != null)
+            {
+                decimal CalculoDescuento = InfoSueldoEmp.SueldoBase * InfoAFP.DependientesTasaAfp;
 
 
 
-                    decimal VistaPorcentaje = Math.Round(InfoAFP.DependientesTasaAfp * 100, 2);
+                decimal VistaPorcentaje = Math.Round(InfoAFP.DependientesTasaAfp * 100, 2);
 
-                    Descuentos.NombreDescuento = "AFP:" + " " + InfoAFP.NombreAfp + "{ " + VistaPorcentaje.ToString() + "%" + " }";
-                    Descuentos.MontoDescuento = CalculoDescuento;
-                }
+                Descuentos.NombreDescuento = "AFP:" + " " + InfoAFP.NombreAfp + "{ " + VistaPorcentaje.ToString() + "%" + " }";
+                Descuentos.MontoDescuento = CalculoDescuento;
+            }
 
-                DatosEmpleado.NombreEmpleado = ObjEmpleado.Nombre;
-                DatosEmpleado.RutEmpleado = ObjEmpleado.Rut;
-                DatosEmpleado.CargoEmpleado = db.CargosModel.SingleOrDefault(x => x.Id == Contrato.CargoId).Nombre;
-                DatosEmpleado.FechaIngresoEmpleado = ObjEmpleado.FechaCreacion.ToString("dd-MM-yyyy");
+            DatosEmpleado.NombreEmpleado = ObjEmpleado.Nombre;
+            DatosEmpleado.RutEmpleado = ObjEmpleado.Rut;
+            DatosEmpleado.CargoEmpleado = db.CargosModel.SingleOrDefault(x => x.Id == Contrato.CargoId).Nombre;
+            DatosEmpleado.FechaIngresoEmpleado = ObjEmpleado.FechaCreacion.ToString("dd-MM-yyyy");
 
-                lstHaberImponible.Add(HaberImp);
-                lstHaberNoImponible.Add(HaberNoImp);
-                lstHaberNoImponible.Add(HaberNoImp2);
-                lstDescuentos.Add(Descuentos);
+            lstHaberImponible.Add(HaberImp);
+            lstHaberNoImponible.Add(HaberNoImp);
+            lstHaberNoImponible.Add(HaberNoImp2);
+            lstDescuentos.Add(Descuentos);
 
-                decimal MontoBonoDePrueba = 100000;
-                decimal MontoHorasExtras = 50000;
-                decimal MontoGratificacion = CalculosLiquidacion.CalcularGratificacionLegal(InfoSueldoEmp.SueldoBase, MontoHorasExtras, MontoBonoDePrueba);
-                HaberImp2.NombreHaber = "Gratificacion";
-                HaberImp2.MontoHaber = MontoGratificacion;
+            decimal MontoBonoDePrueba = 100000;
+            decimal MontoHorasExtras = 50000;
+            decimal MontoGratificacion = CalculosLiquidacion.CalcularGratificacionLegal(InfoSueldoEmp.SueldoBase, MontoHorasExtras, MontoBonoDePrueba);
+            HaberImp2.NombreHaber = "Gratificacion";
+            HaberImp2.MontoHaber = MontoGratificacion;
 
-                lstHaberImponible.Add(HaberImp2);
+            lstHaberImponible.Add(HaberImp2);
 
-                decimal TotalHaberes = lstHaberImponible.Sum(x => Convert.ToDecimal(x.MontoHaber)) + lstHaberNoImponible.Sum(x => Convert.ToDecimal(x.MontoHaber));
-                decimal TotalDescuentos = lstDescuentos.Sum(x => Convert.ToDecimal(x.MontoDescuento));
+            decimal TotalHaberes = lstHaberImponible.Sum(x => Convert.ToDecimal(x.MontoHaber)) + lstHaberNoImponible.Sum(x => Convert.ToDecimal(x.MontoHaber));
+            decimal TotalDescuentos = lstDescuentos.Sum(x => Convert.ToDecimal(x.MontoDescuento));
 
-                DatosLiquidacion.InfoEmpleado = DatosEmpleado;
-                DatosLiquidacion.lstDescuentos = lstDescuentos;
-                DatosLiquidacion.lstHaberImponible = lstHaberImponible;
-                DatosLiquidacion.lstHaberNoImponible = lstHaberNoImponible;
-                DatosLiquidacion.indicadoresEco = Indicadores;
-                DatosLiquidacion.TotalHaberes = TotalHaberes;
-                DatosLiquidacion.TotalDescuentos = TotalDescuentos;
+            DatosLiquidacion.InfoEmpleado = DatosEmpleado;
+            DatosLiquidacion.lstDescuentos = lstDescuentos;
+            DatosLiquidacion.lstHaberImponible = lstHaberImponible;
+            DatosLiquidacion.lstHaberNoImponible = lstHaberNoImponible;
+            DatosLiquidacion.indicadoresEco = Indicadores;
+            DatosLiquidacion.TotalHaberes = TotalHaberes;
+            DatosLiquidacion.TotalDescuentos = TotalDescuentos;
 
                 //Planificación liquidación
 
@@ -651,13 +653,8 @@ namespace BackEndRemuneraciones.Models.Empleado.Ficha
                 // F(IMM * 4.75) = 1.522.375 / 12 = 126.865 -> Este es el tope maximo de gratificación MENSUAL
                 // Se concluye el ejemplo: En este caso se pagará la gratificación mensual calculada en primera instancia.
                 // Ya que es menor al tope mensual de gratificación permitida según el articulo 50.
-
-
-
-
-
                 return DatosLiquidacion;
-            }
+            
         }
 
         public static bool ActualizarEmpleado(Tbempleados Emp)
@@ -688,12 +685,12 @@ namespace BackEndRemuneraciones.Models.Empleado.Ficha
             return Result;
         }
 
-        public static int AgregarEmpDesdeExcel(List<List<string>> ExcelEmp)
+        public static int AgregarEmpDesdeExcel(List<List<string>> ExcelEmp, remuneracionesContext db)
         {
             int Result = 0;
             ExcelEmp.RemoveAt(0);
             List<Tbempleados> EmpleadoToEmpresa = new List<Tbempleados>();
-            remuneracionesContext db = new remuneracionesContext();
+   
 
             FichaEmpresa ObjEmpresa = new FichaEmpresa();
             ObjEmpresa.RazonSocial = "TestEmpresa";

@@ -15,12 +15,10 @@ namespace BackEndRemuneraciones.Models
         public decimal Monto { get; set; }
         public decimal TopeCompararConRenta { get; set; }
 
-            public static object ObtenerTramos(){
+            public static object ObtenerTramos(remuneracionesContext db){
                 object lstTramosFamiliares = new object();
-                using(remuneracionesContext db = new remuneracionesContext()){
-                    
-                    lstTramosFamiliares = db.AsigFamiliarTramo.Select(x => new { id = x.Id, tramo = x.Tramo }).ToList();
-                }
+                lstTramosFamiliares = db.AsigFamiliarTramo.Select(x => new { id = x.Id, tramo = x.Tramo }).ToList();
+                
                 return lstTramosFamiliares;
             }
     }

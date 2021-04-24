@@ -21,28 +21,30 @@ namespace BackEndRemuneraciones.Services
     {
 
         private readonly AppSettings _appSettings;
+        private Models.Data.remuneracionesContext _db;
 
-        public UsuarioServicio(IOptions<AppSettings> appSettings) 
+        public UsuarioServicio(IOptions<AppSettings> appSettings, Models.Data.remuneracionesContext db) 
         {
             _appSettings = appSettings.Value;
+            _db = db;
         }
         public UsuarioResponse Autenticacion(AutenticacionRequest Model) 
         {
                UsuarioResponse usuarioResponse = new UsuarioResponse();
-               using(var db = new remuneracionesContext()) 
-               {
+            
                 string Spassword = Utiles.GetSHA256(Model.Password);
 
-                var Usuario = db.Usuario.Where(u => u.Email == Model.Email && u.Contrasena == Spassword).FirstOrDefault();
+                var Usuario = _db.Usuario.Where(u => u.Email == Model.Email && u.Contrasena == Spassword).FirstOrDefault();
 
                 if (Usuario == null) return null;
 
                 usuarioResponse.Email = Usuario.Email;
                 usuarioResponse.Token = GetToken(Usuario);
-               }
+              
 
             return usuarioResponse;
         }
+
 
         private string GetToken(Usuario usuario) 
         {

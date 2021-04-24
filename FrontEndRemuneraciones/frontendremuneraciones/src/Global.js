@@ -1,5 +1,5 @@
 var Global = {
-    url: 'http://localhost:5001/api/'
+    url: 'https://localhost:44350/api/'
 };
 
-export default Global;
+export default Global

@@ -10,7 +10,7 @@ namespace BackEndRemuneraciones.Models.Empleado.Prevision
         public int Id { get; set; }
         public int AFPId { get; set; }
         public virtual AfpModel AFP { get; set; }
-        public virtual IsapreModel Isapre{ get; set; }
+        public virtual IsapreModel? Isapre { get; set; }
         public int IsapreId { get; set; } = 0;
         public decimal MontoPactadoIsapre { get; set; }
         public TipoMontoPactado Tipo { get; set; } = TipoMontoPactado.PESO;

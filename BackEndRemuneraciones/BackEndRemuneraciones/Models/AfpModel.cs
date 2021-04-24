@@ -16,14 +16,11 @@ namespace BackEndRemuneraciones.Models
         public decimal DependientesSis { get; set; }
         public decimal IndependientesTasaAfp { get; set; }
 
-        public static List<AfpParaSelect> ObtenerAfps(){
+        public static List<AfpParaSelect> ObtenerAfps(remuneracionesContext db){
 
             List<AfpParaSelect> LstAfp = new List<AfpParaSelect>();
-            using (remuneracionesContext db = new remuneracionesContext()){
+            LstAfp = db.AfpModel.Select(x => new AfpParaSelect { Id = x.Id, Nombre = x.NombreAfp }).ToList();
 
-                LstAfp = db.AfpModel.Select(x => new AfpParaSelect { Id = x.Id, Nombre = x.NombreAfp }).ToList();
-
-            }
             return LstAfp;
         }
 

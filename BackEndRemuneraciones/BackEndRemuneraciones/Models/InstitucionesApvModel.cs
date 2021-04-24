@@ -8,11 +8,11 @@ public class InstitucionesApvModel{
     public string Nombre {get;set;}
 
 
-    public static List<InstitucionesApvModel> ObtenerInstitucionesApv(){
+    public static List<InstitucionesApvModel> ObtenerInstitucionesApv(remuneracionesContext db){
         List<InstitucionesApvModel> LstIApv = new List<InstitucionesApvModel>();
-        using(remuneracionesContext db = new remuneracionesContext()){
-            LstIApv = db.InstitucionesApvModels.ToList();
-        }
+    
+        LstIApv = db.InstitucionesApvModels.ToList();
+        
         return LstIApv;
     } 
 }

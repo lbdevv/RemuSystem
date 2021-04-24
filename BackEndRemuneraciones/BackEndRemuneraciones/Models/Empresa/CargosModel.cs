@@ -15,23 +15,21 @@ namespace BackEndRemuneraciones.Models.Empresa
         public string Nombre {get;set;}
         public string Detalle {get;set;}
 
-        public static int AgregarCargo(CargosModel ObjCargoAgregar){
+        public static int AgregarCargo(CargosModel ObjCargoAgregar, remuneracionesContext db){
             int Result = 0;
-            using(remuneracionesContext db = new remuneracionesContext())
-            {
-              db.CargosModel.Add(ObjCargoAgregar);
-              Result = db.SaveChanges(); //SaveChanges Retorna un 0 o un 1 dependiendo de lo que haya pasado con la inserción de datos.
-            }
+
+            db.CargosModel.Add(ObjCargoAgregar);
+            Result = db.SaveChanges(); //SaveChanges Retorna un 0 o un 1 dependiendo de lo que haya pasado con la inserción de datos.
+            
 
             return Result;
         }
 
-        public static List<CargosModel> ObtenerCargos(){
+        public static List<CargosModel> ObtenerCargos(remuneracionesContext db){
             List<CargosModel> LstCargos = new List<CargosModel>();
-           using(remuneracionesContext db = new remuneracionesContext())
-            {
-                LstCargos = db.CargosModel.ToList();
-            }
+
+            LstCargos = db.CargosModel.ToList();
+            
             
             return LstCargos;
         }

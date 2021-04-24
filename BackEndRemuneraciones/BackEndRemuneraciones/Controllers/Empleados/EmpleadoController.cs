@@ -24,8 +24,6 @@ namespace BackEndRemuneraciones.Controllers.Empleados
 
 
         [HttpGet("LstEmpleados")]
-
-
         public IActionResult GetLstEmpleados()
         {
                var lstEmpleados = Tbempleados.ListarEmpleados(_db);
@@ -35,31 +33,28 @@ namespace BackEndRemuneraciones.Controllers.Empleados
         [HttpPost("AgregarEmpleado")]
         public IActionResult InsertarEmpleado(FichaEmpleadoRequestModel NewEmp)
         {
-            var ResultEmpleadoAgregado = Tbempleados.InsertarEmpleado(NewEmp); 
-
-        
-            
+            var ResultEmpleadoAgregado = Tbempleados.InsertarEmpleado(NewEmp, _db); 
             return Ok(ResultEmpleadoAgregado);
         }
         
         [HttpGet("GetEmpleado/{id}")]
         public IActionResult ObtenerEmpleado(int id)
         {
-            var Empleado = Tbempleados.ObtenerLiquidacionEmpleado(id);
+            var Empleado = Tbempleados.ObtenerLiquidacionEmpleado(id, _db);
             return Ok(Empleado);
         }
 
         [HttpPost("CargarLiquidacion/{id}")]
         public IActionResult GenerarLiquidacion(int id)
         {
-            bool Result = Tbempleados.AgregarLiquidacion(id);
+            bool Result = Tbempleados.AgregarLiquidacion(id,_db);
             return Ok(Result);
         }
 
         [HttpPut("DesactivarEmpleado/{id}")]
         public IActionResult DarDeBajaEmpleado(int IdEmp)
         {
-            var EmpAdarDeBaja = Tbempleados.ObtenerEmpleado(IdEmp);
+            var EmpAdarDeBaja = Tbempleados.ObtenerEmpleado(IdEmp, _db);
             return Ok(EmpAdarDeBaja);
         }
 
@@ -69,13 +64,13 @@ namespace BackEndRemuneraciones.Controllers.Empleados
             int Result = 0;
             var ExcelEmp = Utiles.LeerExcel(lstEmpleados);
             if(ExcelEmp.Count() > 0) { 
-                  Result = Tbempleados.AgregarEmpDesdeExcel(ExcelEmp);
+                  Result = Tbempleados.AgregarEmpDesdeExcel(ExcelEmp, _db);
             }
             return Ok(Result);
         }
         [HttpGet("EmpleadoLstHyD")]
         public IActionResult ListaHyDEmpleado(){
-            var LstHyD = ServiciosHyD.ObtenerHyDEmpleado(1);
+            var LstHyD = ServiciosHyD.ObtenerHyDEmpleado(1, _db);
             return Ok(LstHyD);
         }
 

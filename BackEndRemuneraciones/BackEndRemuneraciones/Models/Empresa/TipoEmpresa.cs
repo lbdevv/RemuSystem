@@ -14,12 +14,11 @@ namespace BackEndRemuneraciones.Models.Empresa
         public string Nombre {get;set;}
 
 
-        public static List<TipoEmpresa> GetTipoEmpresas(){
+        public static List<TipoEmpresa> GetTipoEmpresas(remuneracionesContext db){
             List<TipoEmpresa> LstTipoEmpresa = new List<TipoEmpresa>();
-            using(var db = new remuneracionesContext())
-            {
-                LstTipoEmpresa = db.TipoEmpresa.ToList();
-            }
+
+            LstTipoEmpresa = db.TipoEmpresa.ToList();
+            
             return LstTipoEmpresa;
         }
     }

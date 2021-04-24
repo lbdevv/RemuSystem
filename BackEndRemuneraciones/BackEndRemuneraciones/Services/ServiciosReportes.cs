@@ -11,21 +11,20 @@ namespace BackEndRemuneraciones.Services
 {
     public class ServiciosReportes
     {
-         public static List<LibroRemuneraciones> ObtenerLibroRemuneraciones()
+         public static List<LibroRemuneraciones> ObtenerLibroRemuneraciones(remuneracionesContext db)
         {
             List<LibroRemuneraciones> LstLibroRemuneraciones = new List<LibroRemuneraciones>();
-            using(var db = new remuneracionesContext())
-            {
-                try{
-                    LstLibroRemuneraciones = db.LibroRemuneraciones.Include(e => e.Empleado)
-                                                                   .Include(c => c.Empleado.ContratoEmp)
-                                                                   .Include(s => s.Empleado.SueldoEmp).ToList();
-                }
-                catch(Exception)
-                {
-                    throw new Exception();
-                }
+    
+            try{
+                LstLibroRemuneraciones = db.LibroRemuneraciones.Include(e => e.Empleado)
+                                                                .Include(c => c.Empleado.ContratoEmp)
+                                                                .Include(s => s.Empleado.SueldoEmp).ToList();
             }
+            catch(Exception ex)
+            {
+                throw new Exception();
+            }
+            
 
             return LstLibroRemuneraciones;
         }

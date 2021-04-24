@@ -37,13 +37,12 @@ namespace BackEndRemuneraciones.Models.Empresa
 
 
 
-        public static int InsertarEmpresa(FichaEmpresaRequestModel Empresa)
+        public static int InsertarEmpresa(FichaEmpresaRequestModel Empresa, remuneracionesContext db)
         {
             int Result = 0;
 
             FichaEmpresa ObjAInsertar = new FichaEmpresa();
-            using (remuneracionesContext db = new remuneracionesContext())
-            {
+  
                 ObjAInsertar.Rut = Empresa.Rut;
                 ObjAInsertar.Principal = Empresa.Principal;
                 ObjAInsertar.RazonSocial = Empresa.RazonSocial;
@@ -63,32 +62,30 @@ namespace BackEndRemuneraciones.Models.Empresa
 
                 db.FichaEmpresa.Add(ObjAInsertar);
                 Result = db.SaveChanges();
-            }
+            
 
             return Result;
         }
-        public static List<ListadoEmpresasRequestModel> ObtenerListadoEmpresas()
+        public static List<ListadoEmpresasRequestModel> ObtenerListadoEmpresas(remuneracionesContext db)
         {
             List<ListadoEmpresasRequestModel> lstEmpresas = new List<ListadoEmpresasRequestModel>();
-            using (remuneracionesContext db = new remuneracionesContext())
-            {
-                lstEmpresas = db.FichaEmpresa.Select(x => 
-                                                    new ListadoEmpresasRequestModel{
-                                                        Id = x.Id,
-                                                        Nombre = x.RazonSocial
-                                                    }).ToList();
-            }
+  
+            lstEmpresas = db.FichaEmpresa.Select(x => 
+                                                new ListadoEmpresasRequestModel{
+                                                    Id = x.Id,
+                                                    Nombre = x.RazonSocial
+                                                }).ToList();
+            
             return lstEmpresas;
         }
 
-        public static FichaEmpresa ObtenerEmpresa(int IdEmpresa)
+        public static FichaEmpresa ObtenerEmpresa(int IdEmpresa, remuneracionesContext db)
         {
             FichaEmpresa EmpresaEcontrada = new FichaEmpresa();
-            using (remuneracionesContext db = new remuneracionesContext())
-            {
-                EmpresaEcontrada = db.FichaEmpresa.Include(Emps => Emps.lstEmpleados)
-                                                  .SingleOrDefault(Empresa => Empresa.Id == IdEmpresa);
-            }
+
+            EmpresaEcontrada = db.FichaEmpresa.Include(Emps => Emps.lstEmpleados)
+                                                .SingleOrDefault(Empresa => Empresa.Id == IdEmpresa);
+            
 
             return EmpresaEcontrada;
         }
