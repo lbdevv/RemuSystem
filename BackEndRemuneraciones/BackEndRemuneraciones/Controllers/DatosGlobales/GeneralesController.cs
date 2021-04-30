@@ -15,15 +15,15 @@ namespace BackEndRemuneraciones.Controllers.DatosGlobales
     public class GeneralesController : ControllerBase
     {
 
-        [HttpGet("ObtenerDatosGlobales")]
-        public IActionResult GetDatosGlobales()
-        {
-                var DatosUF = UFModel.ObtenerUFActiva();
-                var DatosUTM = UTMModel.ObtenerUTMActiva();
-                var DatosIMM = IMMModel.ObtenerObjetoIMM();
-                var DatosGlobales = new DatosGlobalesModel(DatosUF,DatosUTM,DatosIMM);
-                return Ok(DatosGlobales);
-        }
+        //[HttpGet("ObtenerDatosGlobales")]
+        //public IActionResult GetDatosGlobales()
+        //{
+        //        var DatosUF = UFModel.ObtenerUFActiva();
+        //        var DatosUTM = UTMModel.ObtenerUTMActiva();
+        //        var DatosIMM = IMMModel.ObtenerObjetoIMM();
+        //        var DatosGlobales = new DatosGlobalesModel(DatosUF,DatosUTM,DatosIMM);
+        //        return Ok(DatosGlobales);
+        //}
 
     }
 }

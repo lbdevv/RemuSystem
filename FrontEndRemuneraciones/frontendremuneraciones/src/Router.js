@@ -73,7 +73,7 @@ const Router = () => {
                             <Footer />
                         </Fragment>)
 
-                    : (<Route exact path="/Login" component={Login} />)
+                    : (<Route exact path="/" component={Login} />)
             }
         </BrowserRouter>
     );

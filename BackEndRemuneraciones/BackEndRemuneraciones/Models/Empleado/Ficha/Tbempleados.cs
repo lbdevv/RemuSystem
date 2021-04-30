@@ -375,7 +375,7 @@ namespace BackEndRemuneraciones.Models.Empleado.Ficha
                                             }).ToList();
 
                         //verificar si hay que calcularla o se deja directamente así
-                        decimal MontoGratificacion = CalculosLiquidacion.CalcularGratificacionLegal(ObjEmpleado.SueldoEmp.SueldoBase, 0, 0);
+                        decimal MontoGratificacion = CalculosLiquidacion.CalcularGratificacionLegal(ObjEmpleado.SueldoEmp.SueldoBase, 0, 0, db);
                         var GratificacionLegal = new HaberImponible()
                         {
                             NombreHaber = "Gratificación",
@@ -569,7 +569,7 @@ namespace BackEndRemuneraciones.Models.Empleado.Ficha
 
             decimal MontoBonoDePrueba = 100000;
             decimal MontoHorasExtras = 50000;
-            decimal MontoGratificacion = CalculosLiquidacion.CalcularGratificacionLegal(InfoSueldoEmp.SueldoBase, MontoHorasExtras, MontoBonoDePrueba);
+            decimal MontoGratificacion = CalculosLiquidacion.CalcularGratificacionLegal(InfoSueldoEmp.SueldoBase, MontoHorasExtras, MontoBonoDePrueba, db);
             HaberImp2.NombreHaber = "Gratificacion";
             HaberImp2.MontoHaber = MontoGratificacion;
 

@@ -14,20 +14,17 @@ namespace BackEndRemuneraciones.Models.ModelosVariables
         public bool EstaActiva {get;set;} = false;
 
 
-        public static IMMModel ObtenerObjetoIMM(){
+        public static IMMModel ObtenerObjetoIMM(remuneracionesContext db){
             IMMModel SueldoMinActivo = new IMMModel();
-            using(remuneracionesContext db = new remuneracionesContext())
-            {
                 SueldoMinActivo = db.IMMModel.SingleOrDefault(x => x.EstaActiva == true);
-            }
+            
             return SueldoMinActivo;
         }
-        public static decimal ObtenerSueldoMinimoActual(){
+        public static decimal ObtenerSueldoMinimoActual(remuneracionesContext db){
             IMMModel SueldoMinActivo = new IMMModel();
-            using(remuneracionesContext db = new remuneracionesContext())
-            {
+
                 SueldoMinActivo = db.IMMModel.SingleOrDefault(x => x.EstaActiva == true);
-            }
+            
             return SueldoMinActivo.Valor;
         }
 

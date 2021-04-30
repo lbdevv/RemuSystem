@@ -32,25 +32,25 @@ namespace BackEndRemuneraciones.Helpers
 
     public class CalculosLiquidacion
     {
-        public static decimal TopeGratificacionLegalAnual()
+        public static decimal TopeGratificacionLegalAnual(remuneracionesContext db)
         {
-            decimal SueldoMinimoActual = IMMModel.ObtenerSueldoMinimoActual();
+            decimal SueldoMinimoActual = IMMModel.ObtenerSueldoMinimoActual(db);
             decimal ValorTopeIMM = (decimal)(4.75 * 100);
             decimal TopeAnual = Math.Round((ValorTopeIMM * SueldoMinimoActual) / 100);
             return TopeAnual;
         }
 
-        public static decimal TopeGratificacionLegalMensual()
+        public static decimal TopeGratificacionLegalMensual(remuneracionesContext db)
         {
-            decimal SueldoMinimoActual = IMMModel.ObtenerSueldoMinimoActual();
+            decimal SueldoMinimoActual = IMMModel.ObtenerSueldoMinimoActual(db);
             decimal ValorTopeIMM = (decimal)(4.75 * 100);
             decimal TopeMensual = Math.Round(((ValorTopeIMM * SueldoMinimoActual) / 100) / 12);
             return TopeMensual;
         }
-        public static decimal CalcularGratificacionLegal(decimal SueldoBase, decimal HorasExtras, decimal MontoBono)
+        public static decimal CalcularGratificacionLegal(decimal SueldoBase, decimal HorasExtras, decimal MontoBono, remuneracionesContext db)
         {
-            decimal SueldoMinimoActual = IMMModel.ObtenerSueldoMinimoActual();
-            decimal TopeGratMensual = TopeGratificacionLegalMensual();
+            decimal SueldoMinimoActual = IMMModel.ObtenerSueldoMinimoActual(db);
+            decimal TopeGratMensual = TopeGratificacionLegalMensual(db);
             decimal Total = SueldoBase + HorasExtras + MontoBono;
             decimal Gratificacion = Math.Round((25 * Total) / 100);
             if (TopeGratMensual >= Gratificacion)

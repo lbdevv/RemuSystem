@@ -26,8 +26,8 @@ const LibroRemuneraciones = () => {
                     <div className="card-header">
                         <h3 className="card-title"><strong>Libro de Remuneraciones</strong></h3>
                     </div>
-                    <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap">
+                    <div className="card-body table-responsive p-0">
+                        <table className="table table-hover text-nowrap">
                             <thead>
                                 <tr>
                                     <th>Cod</th>

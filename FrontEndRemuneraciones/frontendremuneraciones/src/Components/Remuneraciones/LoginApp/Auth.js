@@ -20,7 +20,7 @@ const PrivateRoute = ({component: Component, ...options}) => {
             ):(
                 <Redirect 
                     to={{
-                        pathname:'/Login',
+                        pathname:'/',
                         state:{ message:'user not authorized' }
                     }}
                 />

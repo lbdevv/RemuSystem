@@ -6,7 +6,7 @@ const ContentSidebar = () => {
     const history = useHistory()
     const logout = () => {
         localStorage.removeItem('token')
-        history.push('/Login')
+        history.push('/')
     }
 
     return (
