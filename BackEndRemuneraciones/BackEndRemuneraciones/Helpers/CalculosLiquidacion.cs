@@ -16,8 +16,14 @@ namespace BackEndRemuneraciones.Helpers
     public class UtilesLiquidacion{
         public static decimal DePorcentajeAdecimal(decimal Valor)
         {
-            decimal ValorARetornar = (Valor / 100);
+            var ValorARetornar = (Valor / 100);
             return ValorARetornar;
+        }
+
+        public static decimal DePorcentajeAdecimal(string Valor) {
+            var valorToDeci = Convert.ToDecimal(Valor);
+            var Resultado = valorToDeci / 100;
+            return Resultado;
         }
         public static decimal DePorcentajeAdecimal(double Valor)
         {

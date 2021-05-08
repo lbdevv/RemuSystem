@@ -12,6 +12,7 @@ namespace BackEndRemuneraciones.Models
         public decimal UFCLP { get; set; }
         public TipoTope Tope_id { get; set; }
         public bool EstaActiva { get; set; }
+        public DateTime Fecha { get; set; } 
 
     }
 

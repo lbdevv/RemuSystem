@@ -43,6 +43,18 @@ namespace BackEndRemuneraciones.Helpers
                 return DateTime.Now;
             }
         }
+
+        //terminar esta funcionalidad
+        //public static List<string> EnumToLstStr(T asdf) where T: Enum
+        //{
+        //    var ReturnValues = new List<string>();
+        //    ReturnValues = Enum.GetValues(typeof(adsf))
+        //                       .Cast<adsf>()
+        //                       .Select(v => v.ToString())
+        //                       .ToList();
+
+        //    return ReturnValues;
+        //} 
         public static string NumeroConPuntosDeMiles(int val)
         {
             nfi.NumberGroupSeparator = ".";

@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using BackEndRemuneraciones.Models.ModelosVariables;
+using BackEndRemuneraciones.Models;
+using BackEndRemuneraciones.Services;
+using BackEndRemuneraciones.Services.RequestConfigServices;
 
 namespace BackEndRemuneraciones.Controllers.Configuracion
 {
@@ -14,17 +17,39 @@ namespace BackEndRemuneraciones.Controllers.Configuracion
     [EnableCors]
     public class ConfiguracionController : ControllerBase
     {
+        private Models.Data.remuneracionesContext _db;
+
+        public ConfiguracionController(Models.Data.remuneracionesContext db) => _db = db;
 
         [HttpPost("InsertarNuevosIE")]
-        public IActionResult InsertNuevosIE()
+        public IActionResult InsertNuevosIE(RequestIE Request)
         {
-            return Ok();
+            var Result = ServiciosConfigParametros.ActualizarIndicadoresEconomicos(Request, _db);
+            return Ok(Result);
         }
 
         [HttpPost("InsertarNuevosTopes")]
-        public IActionResult InsertNuevosTopes()
+        public IActionResult InsertNuevosTopes(RequestTopes request)
         {
-            return Ok();
+            var Result = ServiciosConfigParametros.ActualizarTopes(request,_db);
+            return Ok(Result);
+        }
+        [HttpGet("GetTopesActivos")]
+        public IActionResult ObtenerTopesActivos()
+        {
+            var TopesActivos = ServiciosConfigParametros.ObtenerTopesActivos(_db);
+            return Ok(TopesActivos);
+        }
+
+        [HttpGet("GetTipoTopes")]
+        public IActionResult ObtenerTipoTopes()
+        {
+            var TopesLst = Enum.GetValues(typeof(TipoTope))
+                                .Cast<TipoTope>()
+                                .Select(v => v.ToString())
+                                .ToList();
+
+            return Ok(TopesLst);
         }
 
         [HttpPost("InsertarNuevasAPV")]
@@ -33,9 +58,10 @@ namespace BackEndRemuneraciones.Controllers.Configuracion
             return Ok();
         }
         [HttpPost("InsertarNuevasAFP")]
-        public IActionResult InsertNuevasAFP()
+        public IActionResult InsertNuevasAFP(RequestAFP request)
         {
-            return Ok();
+            var Result = ServiciosConfigParametros.ActualizarAFP(request, _db);
+            return Ok(); 
         }
         [HttpPost("InsertarNuevosDatosSalud")]
         public IActionResult InsertNuevosDatosSalud()

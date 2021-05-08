@@ -9,5 +9,13 @@
     <WebStackScaffolding_IsReferencingScriptLibrariesSelected>True</WebStackScaffolding_IsReferencingScriptLibrariesSelected>
     <WebStackScaffolding_LayoutPageFile />
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
+    <GoogleAppEnginePublishPromote>True</GoogleAppEnginePublishPromote>
+    <GoogleAppEnginePublishOpenWebsite>True</GoogleAppEnginePublishOpenWebsite>
+    <GoogleCloudPublishConfiguration>Release</GoogleCloudPublishConfiguration>
+    <GoogleComputeEnginePublishOpenWebsite>True</GoogleComputeEnginePublishOpenWebsite>
+    <GoogleComputeEnginePublishLaunchRemoteDebugger>False</GoogleComputeEnginePublishLaunchRemoteDebugger>
+    <GoogleComputeEnginePublishSiteName>Default Web Site</GoogleComputeEnginePublishSiteName>
+    <GoogleCloudPublishChoice>Gae</GoogleCloudPublishChoice>
+    <NameOfLastUsedPublishProfile>FolderProfile</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

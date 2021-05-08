@@ -7,6 +7,6 @@ namespace BackEndRemuneraciones.Services.RequestConfigServices
     {
         public string NombreTope { get; set; }
         public string MontoTope { get; set; }
-        public string Fecha { get; set; }
+        public string FechaTope { get; set; }
     }
 }

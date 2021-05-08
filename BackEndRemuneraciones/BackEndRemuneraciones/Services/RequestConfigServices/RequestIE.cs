@@ -8,6 +8,8 @@ namespace BackEndRemuneraciones.Services.RequestConfigServices
         public string MontoUF { get; set; }
         public string MontoUTM { get; set; }
         public string MontoIMM { get; set; }
-        public string Fecha { get; set; }
+        public string FechaUF { get; set; }
+        public string FechaUTM { get; set; }
+        public string FechaIMM { get; set; }
     }
 }
